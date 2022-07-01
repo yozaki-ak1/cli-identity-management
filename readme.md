@@ -2,10 +2,10 @@
 
 ## Overview
 - This tool is intended to be used for interacting with Akamai's Identity Management feature from command line.
-- This CLI is mostly aligned with Akamai Identity Management API, which can be found below link.  
+- This CLI is mostly aligned with Akamai Identity Management API, which can be found the link below.  
 https://techdocs.akamai.com/iam-api/reference/identity-management-api
 
-## Useage
+## Usage
 ### self
 - This lets you manage API credentials for your own API client
 ``` shell
@@ -21,7 +21,7 @@ akamai identity-management client <sub-command> [options]
 ## Sub-Commands
 - Specify [self] or [client] followed by "akamai identity-management"
 ### self
-```shell
+```
 akamai identity-management <command> <args> [options]
 
 self
@@ -46,7 +46,7 @@ Options:
   -h, --help     Show help
 ```
 ### client
-```shell
+```
 akamai identity-management <command> <args> [options]
 
 client
