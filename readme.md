@@ -21,7 +21,7 @@ akamai identity-management client <sub-command> [options]
 ## Sub-Commands
 - Specify [self] or [client] followed by "akamai identity-management"
 ### self
-```shell
+```
 akamai identity-management <command> <args> [options]
 
 self
@@ -46,7 +46,7 @@ Options:
   -h, --help     Show help
 ```
 ### client
-```shell
+```
 akamai identity-management <command> <args> [options]
 
 client
