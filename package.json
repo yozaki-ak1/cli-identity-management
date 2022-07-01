@@ -1,18 +1,18 @@
 {
   "name": "cli-sample",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Akamai CLI for Identity Management",
+  "repository": "https://github.com/yozaki-ak1/cli-identity-management",
+  "main": "./bin/akamai-identity-management",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "author": "yozaki-ak1",
   "license": "ISC",
   "dependencies": {
     "akamai-edgegrid": "^3.2.0",
     "chalk": "^2.3.1",
     "json-cyclic": "^1.0.2",
-    "moment": "^2.29.3",
     "request": "^2.88.2",
     "sywac": "^1.3.0"
   }
