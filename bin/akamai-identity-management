@@ -1,0 +1,395 @@
+#!/usr/bin/env node
+"use strict";
+
+const chalk = require('chalk');
+const sywac = require('sywac');
+let idm = require('../src/idm');
+
+const urls = {
+  "getYourClient" : {"method":"GET", "url": "/identity-management/v2/api-clients/self"},
+  "listYourAccountSwitchKeys" : {"method":"GET", "url": "/identity-management/v2/api-clients/self/account-switch-keys"},
+  "listYourCredentials" : {"method":"GET", "url": "/identity-management/v2/api-clients/self/credentials"},
+  "createYourCredential" : {"method": "POST", "url": "/identity-management/v2/api-clients/self/credentials"},
+  "deactivateYourCredentials" : {"method": "POST", "url": "/identity-management/v2/api-clients/self/credentials/deactivate"},
+  "removeYourCredential" : {"method": "DELETE", "url": "/identity-management/v2/api-clients/self/credentials"},
+  "getYourCredential" : {"method": "GET", "url": "/identity-management/v2/api-clients/self/credentials"},
+  "updateYourCredential" : {"method": "PUT", "url": "/identity-management/v2/api-clients/self/credentials"},
+  "deactivateYourCredential" : {"method": "POST", "url": "/identity-management/v2/api-clients/self/credentials/{credentialId}/deactivate"},
+  "getClient" : {"method": "GET", "url": "/identity-management/v2/api-clients/{clientId}"},
+  "listAccountSwitchKeys" : {"method": "GET", "url": "/identity-management/v2/api-clients/{clientId}/account-switch-keys"},
+  "listCredentials" : {"method": "GET", "url": "/identity-management/v2/api-clients/{clientId}/credentials"},
+  "createCredential" : {"method": "POST", "url": "/identity-management/v2/api-clients/{clientId}/credentials"},
+  "deactivateCredentials" : {"method": "POST", "url": "/identity-management/v2/api-clients/{clientId}/credentials/deactivate"},
+  "removeCredential" : {"method": "DELETE", "url": "/identity-management/v2/api-clients/{clientId}/credentials/{credentialId}"},
+  "getCredential" : {"method" : "GET", "url": "/identity-management/v2/api-clients/{clientId}/credentials/{credentialId}"},
+  "updateCredential" : {"method" : "PUT", "url": "/identity-management/v2/api-clients/{clientId}/credentials/{credentialId}"},
+  "deactivateCredential" : {"method" : "POST", "url": "/identity-management/v2/api-clients/{clientId}/credentials/{credentialId}/deactivate"}
+}
+
+if ((process.versions["node"]).split('.')[0] < 7) {
+  console.log("Akamai Identity Mangement CLI requires Node 7 or later.")
+  process.exit()
+}
+
+// self
+// Get your client
+function getYourClient(app, argv) {
+  return app.getYourClient(argv, urls.getYourClient)
+}
+
+// List your account switch keys
+function listYourAccountSwitchKeys(app, argv) {
+  return app.listYourAccountSwitchKeys(argv, urls.listYourAccountSwitchKeys)
+}
+
+// List your credentials
+function listYourCredentials(app, argv) {
+  return app.listYourCredentials(argv, urls.listYourCredentials)
+}
+
+// Create your credential
+function createYourCredential(app, argv) {
+  return app.createYourCredential(argv, urls.createYourCredential)
+}
+
+// Deactivate your all credentials
+function deactivateYourCredentials(app, argv) {
+  return app.deactivateYourCredentials(argv, urls.deactivateYourCredentials)
+}
+
+// Remove your credential
+function removeYourCredential(app, argv) {
+  return app.removeYourCredential(argv, urls.removeYourCredential)
+}
+
+// Get your credential
+function getYourCredential(app, argv) {
+  return app.getYourCredential(argv, urls.getYourCredential)
+}
+
+// Update your credential
+function updateYourCredential(app, argv) {
+  return app.updateYourCredential(argv, urls.updateYourCredential)
+}
+
+// Deactivate your credential
+function deactivateYourCredential(app, argv) {
+  return app.deactivateYourCredential(argv, urls.deactivateYourCredential)
+}
+
+// Clients
+// Get a client
+function getClient(app, argv) {
+  return app.getClient(argv, urls.getClient)
+}
+
+// List account switch keys
+function listAccountSwitchKeys(app, argv) {
+  return app.listAccountSwitchKeys(argv, urls.listAccountSwitchKeys)
+}
+
+// List credentials
+function listCredentials(app, argv) {
+  return app.listCredentials(argv, urls.listCredentials)
+}
+
+// Create a credential
+function createCredential(app, argv) {
+  return app.createCredential(argv, urls.createCredential)
+}
+
+// Deactivate all credentials
+function deactivateCredentials(app, argv) {
+  return app.deactivateCredentials(argv, urls.deactivateCredentials)
+}
+
+// Remove a credential
+function removeCredential(app, argv) {
+  return app.removeCredential(argv, urls.removeCredential)
+}
+
+// Get a credential
+function getCredential(app, argv) {
+  return app.getCredential(argv, urls.getCredential)
+}
+
+// Update a credential
+function updateCredential(app, argv) {
+  return app.updateCredential(argv, urls.updateCredential)
+}
+
+// Deactivate a credential
+function deactivateCredential(app, argv) {
+  return app.deactivateCredential(argv, urls.deactivateCredential)
+}
+
+const cli = sywac
+  .string('-c, --config <config>', {
+    desc: 'edgerc file location',
+    hints: ``,
+    defaultValue: "~/.edgerc",
+    group: "Command options:"
+  })
+
+  .string('-s, --section <section>', {
+    desc: 'edgerc section',
+    hints: ``,
+    group: "Command options:"
+  })
+
+  .string('-a, --accountSwitchKey <accountSwitchKey>', {
+    desc: 'Swith account',
+    hints: ``,
+    group: "Command options:"
+  })
+
+  .string('--verbose', {
+    desc: 'enable verbose logging',
+    hints: ``,
+    group: "Command options:"
+  })
+
+  .command('self', {
+    desc: 'Deal with your credentials',
+    group: 'Commands',
+    setup: sywac => {
+      sywac
+        .command('gcl|getYourClient', {
+          aliases: 'getYourClient',
+          desc: 'Get your client',
+          hints: '',
+          group: 'self',
+          run: (argv) => {
+            let app = new idm(argv)
+            return getYourClient(app, argv)
+          }
+        })
+
+        .command('lak|listYourAccountSwitchKeys', {
+          aliases: 'listYourAccountSwitchKeys',
+          desc: 'List your account switch keys',
+          hints: '',
+          group: 'self',
+          run: (argv) => {
+            let app = new idm(argv)
+            return listYourAccountSwitchKeys(app, argv)
+          }
+        })
+
+        .command('lcr|listYourCredentials', {
+          aliases: 'listYourCredentials',
+          desc: 'List your credentials',
+          hints: '',
+          group: 'self',
+          run: (argv) => {
+            let app = new idm(argv)
+            return listYourCredentials(app, argv)
+          }
+        })
+
+        .command('ccr|createYourCredentials', {
+          aliases: 'createYourCredentials',
+          desc: 'Create your credential',
+          hints: '',
+          group: 'self',
+          run: (argv) => {
+            let app = new idm(argv)
+            return createYourCredential(app, argv)
+          }
+        })
+
+        .command('dcrs|deactivateYourAllCredentials', {
+          aliases: 'deactivateYourAllCredentials',
+          desc: 'Deactivate your all credentials',
+          hints: '',
+          group: 'self',
+          run: (argv) => {
+            let app = new idm(argv)
+            return deactivateYourCredentials(app, argv)
+          }
+        })
+
+        .command('rcr|removeYourCredential <credentialId>', {
+          aliases: 'removeYourCredential',
+          desc: 'Remove your credential',
+          hints: '',
+          group: 'self',
+          run: (argv) => {
+            let app = new idm(argv)
+            return removeYourCredential(app, argv)
+          }
+        })
+
+        .command('gcr|getYourCredential <credentialId>', {
+          aliases: 'getYourCredential',
+          desc: 'Get your credential',
+          hints: '',
+          group: 'self',
+          run: (argv) => {
+            let app = new idm(argv)
+            return getYourCredential(app, argv)
+          }
+        })
+
+        .command('ucr|updateYourCredential <credentialId> <expiresOn> <status> [description]', {
+          aliases: 'updateYourCredential',
+          desc: 'Update your credential',
+          hints: '',
+          group: 'self',
+          paramsDesc: [
+            'yyyy-mm-ddThh:mi:ss.000Z',
+            'ACTIVE or INACTIVE',
+            'optional'
+          ],
+          run: (argv) => {
+            let app = new idm(argv)
+            return updateYourCredential(app, argv)
+          }
+        })
+
+        .command('dcr|deactivateYourCredential <credentialId>', {
+          aliases: 'deactivateYourCredential',
+          desc: 'Deactivate your credential',
+          hints: '',
+          group: 'self',
+          run: (argv) => {
+            let app = new idm(argv)
+            return deactivateYourCredential(app, argv)
+          }
+        })
+        
+    }
+  })
+
+  .command('client', {
+    desc: 'Deal with a specific API client',
+    group: 'Commands',
+    setup: sywac => {
+      sywac
+        .command('gcl|getClient <clientId>', {
+          aliases: 'getClient',
+          desc: 'Get a client',
+          hints: '',
+          group: 'client',
+          run: (argv) => {
+            let app = new idm(argv)
+            return getClient(app, argv)
+          }
+        })
+
+        .command('lak|listAccountSwitchKeys <clientId>', {
+          aliases: 'listAccountSwitchKeys',
+          desc: 'List account switch keys',
+          hints: '',
+          group: 'client',
+          run: (argv) => {
+            let app = new idm(argv)
+            return listAccountSwitchKeys(app, argv)
+          }
+        })
+
+        .command('lcr|listCredentials <clientId>', {
+          aliases: 'listCredentials',
+          desc: 'List credentials',
+          hints: '',
+          group: 'client',
+          run: (argv) => {
+            let app = new idm(argv)
+            return listCredentials(app, argv)
+          }
+        })
+
+        .command('ccr|createCredential <clientId>', {
+          aliases: 'createCredential',
+          desc: 'Create a credential',
+          hints: '',
+          group: 'client',
+          run: (argv) => {
+            let app = new idm(argv)
+            return createCredential(app, argv)
+          }
+        })
+
+        .command('dcrs|deactivateAllCredentials <clientId>', {
+          aliases: 'deactivateAllCredentials',
+          desc: 'Deactivate all credentials',
+          hints: '',
+          group: 'client',
+          run: (argv) => {
+            let app = new idm(argv)
+            return deactivateCredentials(app, argv)
+          }
+        })
+
+        .command('rcr|removeCredential <clientId> <credentialId>', {
+          aliases: 'removeCredential',
+          desc: 'Remove a credential',
+          hints: '',
+          group: 'client',
+          run: (argv) => {
+            let app = new idm(argv)
+            return removeCredential(app, argv)
+          }
+        })
+
+        .command('gcr|getCredential <clientId> <credentialId>', {
+          aliases: 'getCredential',
+          desc: 'Get a credential',
+          hints: '',
+          group: 'client',
+          run: (argv) => {
+            let app = new idm(argv)
+            return getCredential(app, argv)
+          }
+        })
+
+        .command('ucr|updateCredential <clientId> <credentialId> <expiresOn> <status> [description]', {
+          aliases: 'updateCredential',
+          desc: 'Update a credential',
+          hints: '',
+          group: 'client',
+          run: (argv) => {
+            let app = new idm(argv)
+            return updateCredential(app, argv)
+          }
+        })
+
+        .command('dcr|deactivateCredential <clientId> <credentialId>', {
+          aliases: 'deactivateCredential',
+          desc: 'Deactivate a credential',
+          hints: '',
+          group: 'clients',
+          run: (argv) => {
+            let app = new idm(argv)
+            return deactivateCredential(app, argv)
+          }
+        })
+
+      }
+    }
+  )
+
+  .usage({prefix: 'akamai identity-management'})
+  .version('-v, --version',{hints: ``})
+  .help('-h, --help',{hints: ``})
+  .showHelpByDefault()
+  .outputSettings({
+    maxWidth: 130
+  })
+  .style({
+    group: str => chalk.blue.bold(str)
+  })
+  .style({
+    usagePrefix: str => chalk.blue.bold(str)
+  })
+  .style({
+    messages: str => chalk.yellow.bold(str)
+  })
+
+
+function main () {
+  process.argv[1] = 'test'
+  cli.parseAndExit()
+}
+
+main();

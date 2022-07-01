@@ -1,0 +1,13 @@
+{
+  "requirements": {
+    "node": "7.0.0"
+  },
+  "commands": [
+    {
+      "name": "identity-management",
+      "version": "1.0.0",
+      "description": "Akamai CLI for Identity Management",
+      "bin": ""
+    }
+  ]
+}
