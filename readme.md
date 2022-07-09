@@ -4,6 +4,7 @@
 - This tool is intended to be used for interacting with Akamai's Identity Management feature from command line.
 - This CLI is mostly aligned with Akamai Identity Management API, which can be found the link below.  
 https://techdocs.akamai.com/iam-api/reference/identity-management-api
+- Currently, only used for interacting with "API client credentials"
 
 ## Usage
 ### self
