@@ -333,9 +333,10 @@ class idm {
                 body: data
             })
             .send((error, response, data) => {
+                let status = String(response.status)
                 if(error){
                     reject([error.response, "Unable to complete action. " + error])
-                }else if(response.status != 200) {
+                }else if(String(status).indexOf("20")) {
                     reject("Unable to complete action.  Status code " + response.status)
                 }else{
                     resolve(response)
